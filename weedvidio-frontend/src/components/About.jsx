@@ -44,7 +44,8 @@ class App extends Component {
 			<div>
 				<h2 style={titleStyle}>About</h2>
 				<p style={aboutStyle}>This site helps weedsmokers meet and video chat with eachother in quarantine</p>
-				<p style={aboutStyle}>Reach out to benji@weedvid.io with any inquiries</p>
+				<p style={aboutStyle}>Reach out to benjifishbaum@gmail.com with any inquiries</p>
+				<p style={aboutStyle}>Checkout the code <a href="https://github.com/bfishbaum/weedvid/">here</a></p>
 				<Button variant="primary" size="med" style={friendButtonStyle} onClick={() => this.props.history.push('/')}>Back</Button>
 			</div>
 			<div></div>
