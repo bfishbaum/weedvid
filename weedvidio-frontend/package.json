@@ -20,7 +20,8 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.2.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "websocket-extensions": "^0.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
