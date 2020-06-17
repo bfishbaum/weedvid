@@ -1,0 +1,9 @@
+*/node_modules/*
+.vscode
+weedvidio-frontend/build
+weedvidio-backend/build
+Dockerfile
+Dockerfile.dev
+.DS_Store
+ssl
+build.sh
