@@ -1,0 +1,11 @@
+FROM node:12.8
+
+# Change working directory
+WORKDIR /usr/app/
+COPY package*.json /usr/app/
+COPY .env /usr/app/
+ADD node_modules /usr/app/node_modules
+ADD server /usr/app/server
+
+EXPOSE $PORT
+CMD [ "npm", "start" ]
