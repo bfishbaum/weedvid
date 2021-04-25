@@ -1,0 +1,3 @@
+weedvidio.io www.weedvidio.io {
+    reverse_proxy weedvid_server_1:8000
+}

@@ -32,7 +32,7 @@ console.log(process.env.NODE_ENV)
 console.log(window.location)
 // const IS_DOCKERDEV = process.env.NODE_ENV == "dockerdev"
 const IS_DEV = process.env.NODE_ENV == "development" 
-const IS_PROD = true
+const IS_PROD = !IS_DEV
 
 const SERVER_URL = !IS_DEV ? "" : "http://localhost:8000"
 console.log("ENV: ", process.env)
@@ -75,6 +75,12 @@ class App extends Component {
 					Connected
 				</div>
 			)
+		} else if (this.state.appState == "camera_error") {
+			return (
+				<div className="btn fake-btn disabled text-center connected">
+					Error loading camera.
+				</div>
+			)
 		} else {
 			return (
 				<div className="btn fake-btn disabled text-center loading">
@@ -96,6 +102,31 @@ class App extends Component {
 		}
 	}
 
+	makeMatchButton = () => {
+		var streamState = this.state.streamState
+		if (streamState == "loaded") {
+			return (
+				<Button variant="dark" size="lg" onClick={this.getNewPartner} className="action-btn">
+					{this.state.appState === "searching" ? "Stop" : "Match me!"} 
+				</Button>
+			)
+		}
+		if (streamState == "unloaded") {
+			return (
+				<Button variant="dark" size="lg" className="action-btn disabled">
+					Loading camera...	
+				</Button>
+			)
+		}
+		if (streamState == "error") {
+			return (
+				<Button variant="dark" size="lg" className="action-btn error">
+					Camera Error
+				</Button>
+			)
+		}
+	}
+
 	render () {
 		return (
 			<Container>
@@ -110,16 +141,18 @@ class App extends Component {
 				<Jumbotron className="video-container">
 					<video width={700} autoPlay className="remote-video" id="remote-video"></video>
 					<video width={160} autoPlay muted className="local-video" id="local-video"></video>
+					{/* <video width={160} autoPlay muted className="local-screen" id="local-screen"></video> */}
 				</Jumbotron>
 				</Row>
 				<Row className="bottom-row justify-content-around">
 					<Col>
 					<Row className="button-row justify-content-around">
-						<Button variant="dark" size="lg" onClick={this.getNewPartner} className="action-btn">
-							{this.state.appState === "searching" ? "Stop" : "Match me!"} 
-						</Button>
+						{this.makeMatchButton()}
 						<Button variant="dark" size="lg" onClick={() => {this.props.history.push('/about')}} className="action-btn">
 							About
+						</Button>
+						<Button variant="dark" size="lg" onClick={() => {this.props.history.push('/private')}} className="action-btn">
+							Private	
 						</Button>
 					</Row>
 					</Col>
@@ -133,7 +166,7 @@ class App extends Component {
 				{!IS_PROD ? (<Row> {this.state.displayInfo} </Row>) : (null)}
 				</Col>
 				<Row>
-					<p>Version 1.0.1</p>
+					<p>Version 1.0.0</p>
 				</Row>
 			</Container>
 		)
@@ -178,18 +211,29 @@ class App extends Component {
 		var ourPeer = new Peer(data.userId, peerOptions)
 		navigator.mediaDevices.getUserMedia({video: true, audio: true})
 		.then((stream) => {
-			var localScreen = document.getElementById("local-video")
-			localScreen.srcObject = stream
+			var localVideo = document.getElementById("local-video")
+			localVideo.srcObject = stream
 			this.setState({
 				stream: stream,
 				displayInfo: "Got local stream",
-				appState: "ready"
+				appState: "ready",
+				streamState: "loaded"
 			})	
 		}).catch((err) => {
 			this.setState({
-				displayInfo: "Failed to get local stream"
+				displayInfo: "Failed to get local camera stream",
+				streamState: "error"
 			})	
 		});
+		// navigator.mediaDevices.getDisplayMedia({video: true})
+		// .then((stream) => {
+		// 	var localScreen = document.getElementById("local-screen")
+		// 	localScreen.srcObject = stream
+		// }).catch((err) => {
+		// 	this.setState({
+		// 		displayInfo: "Failed to get local screen stream"
+		// 	})	
+		// });
 		this.setState({
 			peer: ourPeer,
 			userId: data.userId,
@@ -321,6 +365,7 @@ class App extends Component {
 			userCount: 0,
 			info: "",
 			appState: "constructed",
+			streamState: "unloaded"
 		}
 
 		this.getNewPartner = this.getNewPartner.bind(this)
