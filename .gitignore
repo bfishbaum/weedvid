@@ -1,7 +1,5 @@
 */node_modules/*
 .vscode
-weedvidio-frontend/build
-weedvidio-backend/build
 .DS_Store
 ssl
 build.sh
