@@ -1,9 +1,0 @@
-FROM node:12.8
-
-# Change working directory
-WORKDIR /usr/app
-COPY . .
-
-EXPOSE $PORT
-CMD [ "npm", "start" ]
-
