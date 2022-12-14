@@ -54,7 +54,7 @@
     "babel-loader": "^8.2.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "css-loader": "^5.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-router": "0.0.1",
     "html-webpack-plugin": "^5.3.1",
     "style-loader": "^2.0.0",
